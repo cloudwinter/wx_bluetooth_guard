@@ -1,0 +1,27 @@
+<view style="width:100%;margin-top:20rpx;margin-left:20rpx;">{{text}}</view>
+<canvas class='canvas' style="width:200px; height:200px;" 
+canvas-id='canvas' bindlongtap='save'></canvas>
+
+
+
+<view class="header">
+	<switch bindchange="onSwitchChange" checked="{{bleOpened}}">{{bleOpened?'停止扫描':'开始扫描'}}</switch>
+	<image wx:if="{{bleOpened}}" bindtap="startAnimation" class="img-scan" src="../../images/ic_scan.png" animation="{{animationData}}"></image>
+</view>
+<text class="list-title">设备列表</text>
+<block wx:for="{{devices}}" wx:key="*this" wx:for-item="device">
+	<!-- 分割线 -->
+	<view wx:if="{{index > 0}}" class="divider-line"></view>
+	<view class="list-item" hover-class="list-item-hover" >
+		<view class="item-row">
+			<view class="item-left" style="align-items: center;display: flex;">
+				<text >{{device.name}}</text>
+			</view>
+			<view class="item-row">
+				<button bindtap="createBLEConnection"
+                data-device="{{device}}" data-device-id="{{device.deviceId}}" data-name="{{device.name || device.localName}}"
+                 class="mini-btn" type="primary" size="mini">发送</button>
+			</view>
+		</view>
+	</view>
+</block>
