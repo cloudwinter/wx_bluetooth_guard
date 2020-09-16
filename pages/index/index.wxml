@@ -1,36 +1,34 @@
-
-
 <view class="container">
 
 
-  <view class="page-body">
-    <view class="page-section" style="margin-top:50rpx;">
-      <view class="weui-cells weui-cells_after-title">
-        <view class="weui-cell weui-cell_input">
-          <input class="weui-input" bindinput ="houseInput"  placeholder="请输入小区编号" />
-        </view>
-      </view>
-    </view>
+	<view class="page-body">
+		<view class="page-section" style="margin-top:50rpx;">
+			<view class="weui-cells weui-cells_after-title">
+				<view class="weui-cell weui-cell_input">
+					<input class="weui-input" bindinput="houseInput" placeholder="请输入小区编号" />
+				</view>
+			</view>
+		</view>
 
-    <button class="button-sync" bindtap="setHouseCode"  style="width:80%;" type="primary">设置小区</button>
+		<button class="button-sync" bindtap="setHouseCode" style="width:80%;" type="primary">设置小区</button>
 
-    <button class="button-sync" bindtap="syncTime"  style="width:80%;margin-top:40rpx;" type="primary">同步时间</button>
+		<button class="button-sync" bindtap="syncTime" style="width:80%;margin-top:40rpx;" type="primary">同步时间</button>
 
-       <button class="button-sync" bindtap="open"  style="width:80%;margin-top:40rpx;" type="primary">开门</button>
-  </view>
+		<button class="button-sync" bindtap="open" style="width:80%;margin-top:40rpx;" type="primary">开门</button>
+	</view>
 
 
-<view class="modal-dialog" hidden="{{!modalKeyShow}}">
-  <view class="modal-box">
-    <text class="modal-box-title">提示</text>
-    <text class="modal-box-desc">密码为4位数字</text>
-    <input class="modal-box-input" bindinput="onInputChange" type="number" maxlength="4" placeholder="请输入4位密码" cursor-spacing="100"></input>
-    <view style="width:100%;height:1rpx;background:#eee"></view>
-    <view class="modal-box-bottom" style="height:100rpx;">
-      <view style="width:1rpx;height:100%;background:#eee"></view>
-      <view bindtap="onModalKeyClick" data-ctype="confirm" class="modal-box-button"  hover-class="modal-box-button-hover" style="flex-grow:1;color:green;">确定</view>
-    </view>
-  </view>
-</view>
+	<view class="modal-dialog" hidden="{{!modalKeyShow}}">
+		<view class="modal-box">
+			<text class="modal-box-title">提示</text>
+			<text class="modal-box-desc">密码为4位数字</text>
+			<input class="modal-box-input" bindinput="onInputChange" type="number" maxlength="4" placeholder="请输入4位密码" cursor-spacing="100"></input>
+			<view style="width:100%;height:1rpx;background:#eee"></view>
+			<view class="modal-box-bottom" style="height:100rpx;">
+				<view style="width:1rpx;height:100%;background:#eee"></view>
+				<view bindtap="onModalKeyClick" data-ctype="confirm" class="modal-box-button" hover-class="modal-box-button-hover" style="flex-grow:1;color:green;">确定</view>
+			</view>
+		</view>
+	</view>
 
 </view>

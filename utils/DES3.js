@@ -281,6 +281,8 @@ function des_createKeys(key) {
   //return the keys we've created
   return keys;
 } //end of des_createKeys
+
+
 function genkey(key, start, end) {
   //8 byte / 64 bit Key (DES) or 192 bit Key
   return {
@@ -296,17 +298,65 @@ function pad(key) {
   return key;
 }
 
+
+
+function des3HexKey(key) {
+  var hexKey = '';
+  var length = 24;
+  for (var i = 0, l = length; i < l; i++) {
+    if (i < key.length) {
+      hexKey += key.charCodeAt(i).toString(16);
+    } else {
+      hexKey += '00';
+    }
+  }
+  return hexKey;
+}
+
+
+function hexCharCodeToStr(hexCharCodeStr) {
+  var trimedStr = hexCharCodeStr.trim();
+  var rawStr =
+    trimedStr.substr(0, 2).toLowerCase() === "0x" ?
+    trimedStr.substr(2) :
+    trimedStr;
+  var len = rawStr.length;
+  if (len % 2 !== 0) {
+    alert("Illegal Format ASCII Code!");
+    return "";
+  }
+  var curCharCode;
+  var resultStr = [];
+  for (var i = 0; i < len; i = i + 2) {
+    curCharCode = parseInt(rawStr.substr(i, 2), 16); // ASCII Code Value
+    resultStr.push(String.fromCharCode(curCharCode));
+  }
+  return resultStr.join("");
+}
+
 var des3iv = '12345678';
 var DES3 = {
   //3DES加密，CBC/PKCS5Padding
+  // encrypt: function (key, input) {
+  //   var genKey = genkey(key, 0, 24);
+  //   return des(genKey.key, input, 1, 1, des3iv, 1);
+  // },
+
+  //3DES解密，CBC/PKCS5Padding
+  // decrypt: function (key, input) {
+  //   var genKey = genkey(key, 0, 24);
+  //   return des(genKey.key, input, 0, 1, des3iv, 1);
+  // },
+
+  //3DES加密，ECB/zeroPadding
   encrypt: function (key, input) {
-    var genKey = genkey(key, 0, 24);
-    return des(genKey.key, input, 1, 0, des3iv, 1);
+    var hexKey = hexCharCodeToStr(des3HexKey(key));
+    return des(hexKey, input, 1, 0, des3iv, 0);
   },
-  ////3DES解密，CBC/PKCS5Padding
+  //3DES解密，ECB/zeroPadding
   decrypt: function (key, input) {
-    var genKey = genkey(key, 0, 24);
-    return des(genKey.key, input, 0, 1, des3iv, 1);
+    var hexKey = hexCharCodeToStr(des3HexKey(key));
+    return des(hexKey, input, 0, 0, des3iv, 0);
   }
 };
 module.exports = DES3;

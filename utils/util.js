@@ -149,17 +149,89 @@ function ab2hex(buffer) {
 }
 
 
-function stringToHex (s) {
+function stringToHex(s) {
   var r = "";
-  var hexes = new Array ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
-  for (var i=0; i<s.length; i++) {r += hexes [s.charCodeAt(i) >> 4] + hexes [s.charCodeAt(i) & 0xf];}
+  var hexes = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f");
+  for (var i = 0; i < s.length; i++) {
+    r += hexes[s.charCodeAt(i) >> 4] + hexes[s.charCodeAt(i) & 0xf];
+  }
   return r;
 }
- 
-function hexToString (h) {
+
+function hexToString(h) {
   var r = "";
-  for (var i= (h.substr(0, 2)=="0x")?2:0; i<h.length; i+=2) {r += String.fromCharCode (parseInt (h.substr (i, 2), 16));}
+  for (var i = (h.substr(0, 2) == "0x") ? 2 : 0; i < h.length; i += 2) {
+    r += String.fromCharCode(parseInt(h.substr(i, 2), 16));
+  }
   return r;
+}
+
+
+// 计算当前的年月日星期
+function dateLater() {
+  let dateObj = {};
+  let show_day = new Array('0', '1', '2', '3', '4', '5', '6');
+  let date = new Date();
+  date.setDate(date.getDate());
+  let day = date.getDay();
+  dateObj.year = date.getFullYear();
+  dateObj.month = ((date.getMonth() + 1) < 10 ? ("0" + (date.getMonth() + 1)) : date.getMonth() + 1);
+  dateObj.day = (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate());
+  dateObj.week = show_day[day];
+  return dateObj;
+}
+
+
+/**
+ * 当前时间+星期
+ * 2020091603101350
+ * yyyyMMdd0WHHmmss
+ */
+function currentWeekTime(){
+  var date = new Date();
+  //年  
+  var Y = date.getFullYear();
+  //月  
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+  //日  
+  var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  //时  
+  var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  //分  
+  var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  //秒  
+  var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  // 星期
+  var week = this.dateLater().week;
+  if (week == '0') {
+    week = '7'
+  }
+  week = '0' + week;
+  return Y + M + D + week + h + m + s;
+}
+
+
+
+
+/**
+ * 当前时间：yyyyMMddHHssmm
+ * yyyyMMddHHmmss
+ */
+function currentTime() {
+  var date = new Date();
+  //年  
+  var Y = date.getFullYear();
+  //月  
+  var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+  //日  
+  var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+  //时  
+  var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+  //分  
+  var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+  //秒  
+  var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+  return Y + M + D + h + m + s
 }
 
 module.exports = {

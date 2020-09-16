@@ -77,7 +77,7 @@ Page({
     dateVal = dateVal + valLength16Str + house;
     console.error('setHouseCode', dateVal, house, valLength16Str);
     wx.navigateTo({
-      url: '/pages/qrcode/qrcode?d=' + dateVal,
+      url: '/pages/qrcode/qrcode?d=' + dateVal+"&type=setHouseCode",
     })
   },
 
@@ -106,7 +106,7 @@ Page({
     let dateValue = 'CFGCD000B1012' + Y + M + D + week + h + m + s;
     console.error('syncTime', dateValue);
     wx.navigateTo({
-      url: '/pages/qrcode/qrcode?d=' + dateValue,
+      url: '/pages/qrcode/qrcode?d=' + dateValue+"&type=syncTime",
     })
   },
 
@@ -114,9 +114,24 @@ Page({
    * 开门
    */
   open: function () {
-    var origData = 'Q20991230235959T20200101000001X20200914093455S30C13812345678D0';
+    //var origData = 'Q20991230235959T20200101000001X20200914093455S30C13812345678D0';
+    var origDataPre = 'Q20991230235959T20200101000001';
+    var currentTime = 'X'+this.currentTime;
+    var S = 'S30'; //延迟时间默认30S
+    var C = 'C12345678' // 手机号先默认12345678
+    var D = 'D0'; // 默认D0
+    var origData = origDataPre+currentTime+S+C+D;
+    console.info('原始数据',origData);
     var des3en = DES3.encrypt(key,origData);
-    console.info('加密后的数据',des3en,util.stringToHex(des3en));
+    var encryData = util.stringToHex(des3en);
+    console.info('加密后后数据',encryData);
+
+    let dateValue = '53' + encryData+ 'Od';
+    console.error('openData', dateValue);
+    wx.navigateTo({
+      url: '/pages/qrcode/qrcode?d=' + dateValue+"&type=open",
+    })
+
   },
 
 
@@ -133,5 +148,25 @@ Page({
     dateObj.day = (date.getDate() < 10 ? ("0" + date.getDate()) : date.getDate());
     dateObj.week = show_day[day];
     return dateObj;
+  },
+
+  /**
+   * 当前时间：yyyyMMddHHmmmm
+   */
+  currentTime:function() {
+    var date = new Date();
+    //年  
+    var Y = date.getFullYear();
+    //月  
+    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+    //日  
+    var D = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
+    //时  
+    var h = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+    //分  
+    var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    //秒  
+    var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+    return Y + M + D + h + m + s
   },
 })
