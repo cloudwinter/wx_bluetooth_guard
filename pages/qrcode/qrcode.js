@@ -2,6 +2,8 @@
 var QRCode = require('../../utils/weapp-qrcode.js')
 const util = require('../../utils/util')
 const configManager = require('../../utils/configManager')
+const DES3 = require('../../utils/DES3')
+const key = 'e6test2020';
 
 const W = wx.getSystemInfoSync().windowWidth;
 const rate = 750.0 / W;
@@ -20,13 +22,17 @@ Page({
         deviceId: '',
         serviceId: '',
         characteristicId: '',
-        type: '' // setHouseCode,syncTime,open
+        type: '', // setHouseCode,syncTime,open
+        stop:false, // 默认关闭stop
     },
 
     onUnload: function () {
         // 关闭蓝牙
         this.stopBluetoothDevicesDiscovery();
         this.closeBluetoothAdapter();
+        this.setData({
+            stop:true
+        })
     },
 
     onLoad: function (options) {
@@ -51,10 +57,52 @@ Page({
                 colorLight: "white",
                 correctLevel: QRCode.CorrectLevel.H,
             });
+            this.refreshTask(type);
         }
 
-
     },
+
+    /**
+     * 定时刷新的任务
+     * @param {*} type 类型
+     */
+    refreshTask:function(type) {
+        if(this.data.stop) {
+            console.info('停止刷新');
+            return;
+        }
+        var that = this;
+        var textVal = '';
+        if (type == 'syncTime') {
+            textVal = 'CFGCD000B1012' + util.currentWeekTime();
+            console.info('定时刷新同步时间',textVal);
+            that.setData({
+                text: textVal
+            })
+            that.tapHandler();
+            
+            setTimeout(that.refreshTask, 5000, type);
+        } else if (type == 'open') {
+            var origDataPre = 'Q20991230235959T20200101000001';
+            var currentTime = 'X' + util.currentTime();
+            var S = 'S30'; //延迟时间默认30S
+            var C = 'C12345678' // 手机号先默认12345678
+            var D = 'D0'; // 默认D0
+            var origData = origDataPre + currentTime + S + C + D;
+            console.info('加密前数据',origData);
+            var des3en = DES3.encrypt(key,origData);
+            textVal = util.stringToHex(des3en);
+            console.info('加密后后数据',textVal);
+            console.info('定时刷新同步开门',textVal);
+            that.setData({
+                text: textVal
+            })
+            that.tapHandler();
+            setTimeout(that.refreshTask, 10000, type);
+        }
+    },
+
+
 
     confirmHandler: function (e) {
         var value = e.detail.value
@@ -67,7 +115,7 @@ Page({
         })
     },
     tapHandler: function () {
-        console.log('tap')
+        console.info('tapHandler')
         // 传入字符串生成qrcode
         qrcode.makeCode(this.data.text)
     },

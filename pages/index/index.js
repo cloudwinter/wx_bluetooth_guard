@@ -116,7 +116,7 @@ Page({
   open: function () {
     //var origData = 'Q20991230235959T20200101000001X20200914093455S30C13812345678D0';
     var origDataPre = 'Q20991230235959T20200101000001';
-    var currentTime = 'X'+this.currentTime;
+    var currentTime = 'X'+this.currentTime();
     var S = 'S30'; //延迟时间默认30S
     var C = 'C12345678' // 手机号先默认12345678
     var D = 'D0'; // 默认D0

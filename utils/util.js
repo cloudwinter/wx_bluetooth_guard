@@ -202,12 +202,12 @@ function currentWeekTime(){
   //秒  
   var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
   // 星期
-  var week = this.dateLater().week;
+  var week = dateLater().week;
   if (week == '0') {
     week = '7'
   }
   week = '0' + week;
-  return Y + M + D + week + h + m + s;
+  return ''+Y + M + D + week + h + m + s;
 }
 
 
@@ -231,7 +231,7 @@ function currentTime() {
   var m = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
   //秒  
   var s = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
-  return Y + M + D + h + m + s
+  return ''+Y + M + D + h + m + s;
 }
 
 module.exports = {
@@ -250,5 +250,7 @@ module.exports = {
   stringToHex,
   findIndex,
   find,
-  setResultData
+  setResultData,
+  currentWeekTime,
+  currentTime,
 }
